@@ -10,11 +10,46 @@ datasource db {
     url      = env("DATABASE_URL")
 }
 
-model Post {
-    id        Int      @id @default(autoincrement())
-    name      String
-    createdAt DateTime @default(now())
-    updatedAt DateTime @updatedAt
+model reciept {
+    id           String        @id @default(cuid())
+    name         String
+    recieptItem  recieptItem[]
+    coffeeshop   coffeeshop?   @relation(fields: [coffeeshopId], references: [id])
+    coffeeshopId String?
+}
 
-    @@index([name])
+model recieptItem {
+    id         String   @id @default(cuid())
+    reciept    reciept  @relation(fields: [recieptId], references: [id])
+    recieptId  String
+    menuItem   MenuItem @relation(fields: [menuItemId], references: [id])
+    menuItemId String
+    quantity   Int      @default(1)
+}
+
+model MenuItem {
+    id           String        @id @default(cuid())
+    name         String
+    price        Float
+    description  String
+    category     String
+    recieptItem  recieptItem[]
+    coffeeshop   coffeeshop?   @relation(fields: [coffeeshopId], references: [id])
+    coffeeshopId String?
+}
+
+model coffeeshop {
+    id       String     @id @default(cuid())
+    name     String
+    reciept  reciept[]
+    MenuItem MenuItem[]
+    users    user[]
+}
+
+model user {
+    id           String      @id @default(cuid())
+    name         String
+    email        String      @unique
+    coffeeshop   coffeeshop? @relation(fields: [coffeeshopId], references: [id])
+    coffeeshopId String?
 }
