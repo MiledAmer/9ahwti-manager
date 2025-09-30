@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import Header from "../../modules/menu/components/header";
+import Header from "../../../modules/menu/components/header";
 import Menu from "@/modules/menu/components/menu";
 import Reciept from "@/modules/menu/components/reciept";
 import type { CartItem, MenuItem } from "@/modules/menu/types";
